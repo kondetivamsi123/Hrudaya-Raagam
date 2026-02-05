@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YouTube Search Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #1a1a2e;
+            color: white;
+        }
+        button {
+            background: #6366f1;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 10px 0;
+        }
+        button:hover {
+            background: #4f46e5;
+        }
+        #results {
+            margin-top: 20px;
+        }
+        .song {
+            background: #16213e;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 8px;
+        }
+        .error {
+            color: #ff6b6b;
+        }
+        .success {
+            color: #51cf66;
+        }
+    </style>
+</head>
+<body>
+    <h1>🎵 YouTube Search Test</h1>
+    
+    <div>
+        <h2>Test 1: Backend Health</h2>
+        <button onclick="testBackend()">Test Backend Connection</button>
+        <div id="backend-result"></div>
+    </div>
+
+    <div>
+        <h2>Test 2: YouTube Search</h2>
+        <button onclick="testYouTubeSearch()">Test YouTube Search</button>
+        <div id="youtube-result"></div>
+    </div>
+
+    <div>
+        <h2>Test 3: Local Songs</h2>
+        <button onclick="testLocalSongs()">Test Local Songs</button>
+        <div id="local-result"></div>
+    </div>
+
+    <div id="results"></div>
+
+    <script>
+        async function testBackend() {
+            const resultDiv = document.getElementById('backend-result');
+            resultDiv.innerHTML = 'Testing...';
+            
+            try {
+                const response = await fetch('http://localhost:8000/songs');
+                if (response.ok) {
+                    const data = await response.json();
+                    resultDiv.innerHTML = `<p class="success">✅ Backend is running! Found ${data.length} songs in database.</p>`;
+                } else {
+                    resultDiv.innerHTML = `<p class="error">❌ Backend returned error: ${response.status}</p>`;
+                }
+            } catch (error) {
+                resultDiv.innerHTML = `<p class="error">❌ Cannot connect to backend: ${error.message}</p>`;
+            }
+        }
+
+        async function testYouTubeSearch() {
+            const resultDiv = document.getElementById('youtube-result');
+            resultDiv.innerHTML = 'Searching YouTube...';
+            
+            try {
+                const response = await fetch('http://localhost:8000/songs/youtube-search?query=butta');
+                if (response.ok) {
+                    const data = await response.json();
+                    if (data.length > 0) {
+                        resultDiv.innerHTML = `<p class="success">✅ YouTube search working! Found ${data.length} results.</p>`;
+                        
+                        // Display first 3 results
+                        let html = '<div>';
+                        data.slice(0, 3).forEach(song => {
+                            html += `
+                                <div class="song">
+                                    <h3>${song.title}</h3>
+                                    <p>Artist: ${song.artist}</p>
+                                    <p>URL: ${song.file_url}</p>
+                                    <p>Views: ${(song.views / 1000000).toFixed(1)}M</p>
+                                </div>
+                            `;
+                        });
+                        html += '</div>';
+                        resultDiv.innerHTML += html;
+                    } else {
+                        resultDiv.innerHTML = `<p class="error">⚠️ YouTube search returned 0 results</p>`;
+                    }
+                } else {
+                    resultDiv.innerHTML = `<p class="error">❌ YouTube search failed: ${response.status}</p>`;
+                }
+            } catch (error) {
+                resultDiv.innerHTML = `<p class="error">❌ YouTube search error: ${error.message}</p>`;
+            }
+        }
+
+        async function testLocalSongs() {
+            const resultDiv = document.getElementById('local-result');
+            resultDiv.innerHTML = 'Fetching local songs...';
+            
+            try {
+                const response = await fetch('http://localhost:8000/songs/search?query=butta');
+                if (response.ok) {
+                    const data = await response.json();
+                    resultDiv.innerHTML = `<p class="success">✅ Local search working! Found ${data.length} results.</p>`;
+                    
+                    if (data.length > 0) {
+                        let html = '<div>';
+                        data.forEach(song => {
+                            html += `
+                                <div class="song">
+                                    <h3>${song.title}</h3>
+                                    <p>Artist: ${song.artist}</p>
+                                    <p>Mood: ${song.mood_tag}</p>
+                                    <p>URL: ${song.file_url}</p>
+                                </div>
+                            `;
+                        });
+                        html += '</div>';
+                        resultDiv.innerHTML += html;
+                    }
+                } else {
+                    resultDiv.innerHTML = `<p class="error">❌ Local search failed: ${response.status}</p>`;
+                }
+            } catch (error) {
+                resultDiv.innerHTML = `<p class="error">❌ Local search error: ${error.message}</p>`;
+            }
+        }
+
+        // Auto-run tests on load
+        window.onload = () => {
+            console.log('Running automatic tests...');
+            testBackend();
+            setTimeout(testYouTubeSearch, 1000);
+            setTimeout(testLocalSongs, 2000);
+        };
+    </script>
+</body>
+</html>

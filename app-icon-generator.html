@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hrudaya Raagam - Modern App Icon</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 40px;
+            background: #0f172a;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            font-family: 'Inter', -apple-system, sans-serif;
+            color: white;
+        }
+
+        .preview-container {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 40px;
+            border-radius: 32px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .icon-box {
+            width: 512px;
+            height: 512px;
+            border-radius: 110px;
+            /* iOS style rounded corners */
+            overflow: hidden;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3);
+            margin-bottom: 30px;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            background: linear-gradient(to right, #8B5CF6, #EC4899);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        p {
+            color: #94a3b8;
+            max-width: 500px;
+            text-align: center;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+
+        .controls {
+            display: flex;
+            gap: 15px;
+        }
+
+        .btn {
+            background: linear-gradient(to right, #8B5CF6, #EC4899);
+            color: white;
+            padding: 16px 32px;
+            border: none;
+            border-radius: 14px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 10px 15px -3px rgba(139, 92, 246, 0.3);
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 20px 25px -5px rgba(139, 92, 246, 0.4);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            box-shadow: none;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Modern App Icon</h1>
+    <p>We've updated your icon with the <b>Modern Purple to Pink</b> gradient and the <b>Musical Note Heart</b> design
+        as requested.</p>
+
+    <div class="preview-container">
+        <div class="icon-box" id="icon-box">
+            <svg id="app-icon-svg" width="1024" height="1024" viewBox="0 0 1024 1024"
+                xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <linearGradient id="mainGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" style="stop-color:#8B5CF6;stop-opacity:1" />
+                        <stop offset="100%" style="stop-color:#EC4899;stop-opacity:1" />
+                    </linearGradient>
+                    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+                        <feGaussianBlur in="SourceAlpha" stdDeviation="15" result="blur" />
+                        <feOffset in="blur" dx="0" dy="10" result="offsetBlur" />
+                        <feComponentTransfer>
+                            <feFuncA type="linear" slope="0.3" />
+                        </feComponentTransfer>
+                        <feMerge>
+                            <feMergeNode />
+                            <feMergeNode in="SourceGraphic" />
+                        </feMerge>
+                    </filter>
+                </defs>
+
+                <!-- Background Rect (Corners managed by parent) -->
+                <rect width="1024" height="1024" fill="url(#mainGradient)" />
+
+                <!-- Subtle sound waves pattern -->
+                <g opacity="0.1" stroke="white" stroke-width="2" fill="none">
+                    <path d="M 0 512 Q 128 400, 256 512 T 512 512 T 768 512 T 1024 512" />
+                    <path d="M 0 542 Q 128 430, 256 542 T 512 542 T 768 542 T 1024 542" />
+                    <path d="M 0 482 Q 128 370, 256 482 T 512 482 T 768 482 T 1024 482" />
+                </g>
+
+                <!-- Centered Heart with Music Note -->
+                <g filter="url(#shadow)">
+                    <!-- Heart Shape -->
+                    <path d="M 512 850 
+                             C 400 750, 200 650, 200 450 
+                             C 200 320, 300 250, 400 250 
+                             C 460 250, 512 300, 512 300 
+                             C 512 300, 564 250, 624 250 
+                             C 724 250, 824 320, 824 450 
+                             C 824 650, 624 750, 512 850 Z" fill="rgba(255, 255, 255, 0.15)" stroke="white"
+                        stroke-width="15" />
+
+                    <!-- Music Note (♪) inside the heart -->
+                    <g transform="translate(460, 350) scale(4.5)" fill="white">
+                        <path
+                            d="M 12 0 L 12 40 C 10 38, 5 36, 0 40 C -5 44, -5 50, 0 54 C 5 58, 15 58, 20 54 C 23 52, 24 48, 24 45 L 24 10 L 40 10 L 40 0 L 12 0 Z" />
+                    </g>
+                </g>
+            </svg>
+        </div>
+
+        <div class="controls">
+            <button class="btn" onclick="downloadPNG()">Download 1024px PNG</button>
+            <button class="btn btn-secondary" onclick="window.close()">Close</button>
+        </div>
+    </div>
+
+    <script>
+        function downloadPNG() {
+            const svg = document.getElementById('app-icon-svg');
+            const canvas = document.createElement('canvas');
+            canvas.width = 1024;
+            canvas.height = 1024;
+            const ctx = canvas.getContext('2d');
+
+            // Add rounded corners to canvas draw
+            ctx.beginPath();
+            const radius = 220; // 1024 scale radius
+            ctx.moveTo(radius, 0);
+            ctx.lineTo(1024 - radius, 0);
+            ctx.quadraticCurveTo(1024, 0, 1024, radius);
+            ctx.lineTo(1024, 1024 - radius);
+            ctx.quadraticCurveTo(1024, 1024, 1024 - radius, 1024);
+            ctx.lineTo(radius, 1024);
+            ctx.quadraticCurveTo(0, 1024, 0, 1024 - radius);
+            ctx.lineTo(0, radius);
+            ctx.quadraticCurveTo(0, 0, radius, 0);
+            ctx.closePath();
+            ctx.clip();
+
+            const xml = new XMLSerializer().serializeToString(svg);
+            const svg64 = btoa(unescape(encodeURIComponent(xml)));
+            const b64Start = 'data:image/svg+xml;base64,';
+            const image64 = b64Start + svg64;
+
+            const img = new Image();
+            img.onload = function () {
+                ctx.drawImage(img, 0, 0, 1024, 1024);
+                const png = canvas.toDataURL('image/png');
+                const link = document.createElement('a');
+                link.download = 'hrudaya_raagam_icon.png';
+                link.href = png;
+                link.click();
+            };
+            img.src = image64;
+        }
+    </script>
+</body>
+
+</html>
