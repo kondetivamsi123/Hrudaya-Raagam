@@ -1,1 +1,1 @@
-export const API_BASE_URL = 'http://10.114.117.136:8000'; // Replace with your IP for mobile
+export const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000';
