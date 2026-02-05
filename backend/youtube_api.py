@@ -31,7 +31,8 @@ def search_youtube(query: str, max_results: int = 10) -> list:
                     "sort_by": "relevance"
                 }
                 
-                response = requests.get(url, params=params, timeout=5)
+                # Reduced timeout to 3 seconds for faster switching
+                response = requests.get(url, params=params, timeout=3)
                 
                 if response.status_code == 200:
                     data = response.json()
